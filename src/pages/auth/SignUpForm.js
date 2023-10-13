@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 
 import styles from "../../styles/SignInUpForm.module.css";
@@ -8,6 +8,17 @@ import appStyles from "../../App.module.css";
 import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
 
 const SignUpForm = () => {
+
+  const [signUpData, setSignUpData] = useState(
+    {
+      username: "",
+      password1: "",
+      password2: "",
+    }
+  );
+
+  const {username, password1, password2} = signUpData;
+
   return (
     <Row className={styles.Row}>
       <Col className="my-auto py-2 p-md-2" md={6}>
@@ -18,7 +29,7 @@ const SignUpForm = () => {
           <Form>
             <Form.Group controlId="username">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" name="username"/>
+              <Form.Control type="email" placeholder="Enter email" name="username" value={username}/>
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
@@ -27,11 +38,11 @@ const SignUpForm = () => {
 
             <Form.Group controlId="password1">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password1"/>
+              <Form.Control type="password" placeholder="Password" name="password1" value={password1}/>
             </Form.Group>
             <Form.Group controlId="password2">
               <Form.Label>Confirm password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password2"/>
+              <Form.Control type="password" placeholder="Password" name="password2" value={password2}/>
             </Form.Group>
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="Check me out" />
