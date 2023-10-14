@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
-import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
+import { Form, Button, Image, Col, Row, Container, Alert } from "react-bootstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUpForm = () => {
 
@@ -17,6 +19,30 @@ const SignUpForm = () => {
     }
   );
 
+  const handleChange = (event) => {
+    setSignUpData({
+      ...signUpData,
+      [event.target.name]: event.target.value,
+    })
+  };
+
+  const history = useHistory();
+
+  const [errors, setErrors] = useState({});
+
+  const handleSubmit = async (event) =>{
+    event.preventDefault();
+    try {
+      await axios.post('/dj-rest-auth/registration/', signUpData)
+      //where to next
+      history.push('/signin')
+    } catch (err) {
+      setErrors(
+        err.response?.data
+      )
+    }
+  }
+
   const {username, password1, password2} = signUpData;
 
   return (
@@ -26,23 +52,24 @@ const SignUpForm = () => {
           <h1 className={styles.Header}>sign up</h1>
 
           {/* add your form here */}
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" name="username" value={username}/>
+              <Form.Control type="email" placeholder="Enter email" name="username" value={username} onChange={handleChange}/>
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
               
             </Form.Group>
+            {errors.username?.map((message, idx) => <Alert>{message}</Alert>)}
 
             <Form.Group controlId="password1">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password1" value={password1}/>
+              <Form.Control type="password" placeholder="Password" name="password1" value={password1} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="password2">
               <Form.Label>Confirm password</Form.Label>
-              <Form.Control type="password" placeholder="Password" name="password2" value={password2}/>
+              <Form.Control type="password" placeholder="Password" name="password2" value={password2} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="Check me out" />
