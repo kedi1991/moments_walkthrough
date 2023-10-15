@@ -8,14 +8,39 @@ import Row from "react-bootstrap/Row";
 import Image from "react-bootstrap/Image";
 import Container from "react-bootstrap/Container";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
+import axios from "axios";
+import { useState } from "react";
+
 
 function SignInForm() {
     //   Add your component logic here
+
+    const [signInData, setSignInData] = useState({
+        username: "",
+        password: "",
+      });
+      const { username, password } = signInData;
+    
+      const history = useHistory();
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          await axios.post("/dj-rest-auth/login/", signInData);
+          history.push("/");
+        } catch (err) {
+        }
+      };
+      const handleChange = (event) => {
+        setSignInData({
+          ...signInData,
+          [event.target.name]: event.target.value,
+        });
+      };
 
     return (
         <Row className={styles.Row}>
@@ -26,16 +51,16 @@ function SignInForm() {
                     <Form>
                         <Form.Group controlId="formBasicEmail" className= {`${styles.Input}`}>
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="email" placeholder="Username" name="username" />
+                            <Form.Control type="email" placeholder="Username" name="username" value={username} onChange={handleChange}/>
                             
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword" className= {`${styles.Input}`} >
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" name="password" />
+                            <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={handleChange}/>
                         </Form.Group>
                         
-                        <Button type="submit" className= {`${btnStyles.Wide} ${btnStyles.Bright} ${btnStyles.Button}`}>
+                        <Button type="submit" className= {`${btnStyles.Wide} ${btnStyles.Bright} ${btnStyles.Button}`} onSubmit={handleSubmit}>
                             Sign in
                         </Button>
                     </Form>
