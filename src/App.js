@@ -5,8 +5,27 @@ import { Route, Switch } from 'react-router-dom';
 import './api/axiosDefaults';
 import SignUpForm from './pages/auth/SignUpForm';
 import SignInForm from './pages/auth/SignInForm';
+import { useState } from 'react';
+
+
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null)
+
+  const handleMount = async () => {
+    try {
+      const { data } = await axios.get("dj-rest-auth/user/");
+      setCurrentUser(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    handleMount();
+  }, []);
+
+  
   return (
     <div className={styles.App}>
       <NavBar></NavBar>
