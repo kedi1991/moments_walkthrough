@@ -16,6 +16,9 @@ import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
 function SignInForm() {
+
+  const setCurrentUser = useContext(SetCurrentUserContext);
+
   const [signInData, setSignInData] = useState({
     username: "",
     password: "",
