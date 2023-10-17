@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 
 import Form from "react-bootstrap/Form";
@@ -14,6 +14,7 @@ import { Link, useHistory } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
+import { SetCurrentUserContext } from "../../App";
 
 function SignInForm() {
 
